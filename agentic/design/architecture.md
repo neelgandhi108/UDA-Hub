@@ -72,7 +72,7 @@ Input is a `SupportTicket` dictionary:
 ```
 
 The shared `SupportState` carries LangChain `messages`, normalized ticket data,
-classification, route, memories, retrieved articles, tool results, confidence,
+an interpreted and retrieval query, classification, route, memories, retrieved articles, tool results, confidence,
 decision trace, outcome, response, and errors. Nodes return state deltas. The
 `messages` field uses LangGraph's `add_messages` reducer, so a checkpointer keyed
 by `thread_id` retains short-term conversation context.
@@ -131,7 +131,10 @@ core repository similarly abstracts knowledge and memory operations.
 
 - **Execution state:** every node shares the typed state during one graph run.
 - **Short-term/session:** `InMemorySaver` checkpoints message/state history by
-  `configurable.thread_id`; the next turn receives earlier messages.
+  `configurable.thread_id`. The Memory agent extracts prior same-thread turns.
+  When the current text contains a follow-up reference such as “that did not
+  work” or “what next,” the Classifier combines it with the latest customer issue
+  and the Knowledge agent uses that interpreted context in its retrieval query.
 - **Long-term/cross-session:** `customer_memories` stores preferences and prior
   resolutions by account + external user. `ticket_messages` stores complete
   interaction history. The Memory agent loads both even under a new thread ID.

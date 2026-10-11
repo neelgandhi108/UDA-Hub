@@ -31,6 +31,10 @@ def main() -> None:
                 "account_id": "cultpass", "external_user_id": "a4ab87", "user_name": "Alice Kingsley",
                 "text": "I cannot log in and the password reset email is missing", "channel": "chat", "urgency": "high",
             }),
+            ("same-thread-follow-up", "demo-resolution", {
+                "account_id": "cultpass", "external_user_id": "a4ab87", "user_name": "Alice Kingsley",
+                "text": "That did not work. What should I do next?", "channel": "chat", "urgency": "high",
+            }),
             ("tool-action", "demo-action", {
                 "account_id": "cultpass", "external_user_id": "f556c0", "user_name": "Bob Stone",
                 "text": "Please pause my subscription", "channel": "email", "urgency": "normal", "execute_action": True,

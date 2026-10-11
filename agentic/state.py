@@ -26,6 +26,8 @@ class SupportState(TypedDict, total=False):
     ticket: SupportTicket
     thread_id: str
     memory_context: dict[str, Any]
+    interpreted_query: str
+    retrieval_query: str
     classification: dict[str, Any]
     route: str
     tool_results: list[dict[str, Any]]

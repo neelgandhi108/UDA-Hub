@@ -61,6 +61,7 @@ def make_intake_agent(logger):
             "ticket": ticket,
             "thread_id": thread_id,
             "messages": [HumanMessage(content=ticket["text"])],
+            "interpreted_query": ticket["text"], "retrieval_query": "",
             "classification": {}, "route": "", "tool_results": [], "knowledge_results": [],
             "retrieval_confidence": 0.0, "outcome": "", "response": "",
             "escalation_reason": "", "errors": [],

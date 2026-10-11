@@ -10,7 +10,7 @@ def make_knowledge_agent(tools, logger):
         ticket = state["ticket"]
         classification = state["classification"]
         expanded_query = " ".join([
-            ticket["text"], classification.get("category", ""),
+            state.get("interpreted_query") or ticket["text"], classification.get("category", ""),
             " ".join(classification.get("signals", [])),
         ])
         result = tools.search_knowledge(ticket["account_id"], expanded_query, limit=3)
@@ -23,7 +23,8 @@ def make_knowledge_agent(tools, logger):
         logger.log("knowledge_retrieved", "knowledge", thread_id=thread_id, ticket_id=ticket_id,
                    details={"result_count": len(articles), "confidence": confidence,
                             "article_ids": [article["article_id"] for article in articles]})
-        return {"knowledge_results": articles, "retrieval_confidence": confidence, "errors": errors,
+        return {"knowledge_results": articles, "retrieval_confidence": confidence,
+                "retrieval_query": expanded_query, "errors": errors,
                 "decision_trace": [f"knowledge: retrieved {len(articles)} article(s), confidence {confidence:.2f}"]}
 
     return knowledge_agent

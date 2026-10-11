@@ -10,9 +10,13 @@ def make_escalation_agent(logger):
         classification = state.get("classification", {})
         reason = state.get("escalation_reason") or "Automation could not safely resolve this request."
         attempted_tools = ", ".join(item.get("tool", "unknown") for item in state.get("tool_results", [])) or "none"
+        prior_user_messages = state.get("memory_context", {}).get("prior_user_messages", [])
+        issue_context = ""
+        if classification.get("used_session_context") and prior_user_messages:
+            issue_context = f' Original issue: "{prior_user_messages[-1]}".'
         response = (
             "I’m escalating this to a human support specialist so it can be handled safely. "
-            f"Reason: {reason} The hand-off includes category={classification.get('category', 'unknown')}, "
+            f"Reason: {reason}{issue_context} The hand-off includes category={classification.get('category', 'unknown')}, "
             f"urgency={classification.get('urgency', 'normal')}, and attempted tools={attempted_tools}."
         )
         thread_id, ticket_id = context(state, config)

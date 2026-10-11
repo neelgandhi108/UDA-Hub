@@ -42,6 +42,10 @@ def make_resolver_agent(logger, threshold: float = 0.42):
         confidence = state.get("retrieval_confidence", 0.0)
         articles = state.get("knowledge_results", [])
         tool_failed = any(not item.get("ok") for item in state.get("tool_results", []))
+        follow_up_failed = bool(
+            state.get("classification", {}).get("used_session_context")
+            and re.search(r"\b(did not|didn't|does not|doesn't|not work|failed|still)\b", state["ticket"]["text"], re.I)
+        )
         if tool_failed:
             outcome, reason = "escalated", "A required customer-data tool did not complete successfully."
             result = {"outcome": outcome, "escalation_reason": reason,
@@ -50,6 +54,14 @@ def make_resolver_agent(logger, threshold: float = 0.42):
             outcome, reason = "escalated", f"No sufficiently relevant knowledge was found (confidence {confidence:.2f}, required {threshold:.2f})."
             result = {"outcome": outcome, "escalation_reason": reason,
                       "decision_trace": [f"resolver: confidence gate failed — {reason}"]}
+        elif follow_up_failed and "escalat" in articles[0]["content"].lower():
+            outcome = "escalated"
+            reason = (
+                f"The earlier {state['classification']['category']} troubleshooting did not resolve "
+                "the issue, and the retrieved policy requires human support for persistent failures."
+            )
+            result = {"outcome": outcome, "escalation_reason": reason,
+                      "decision_trace": [f"resolver: persistent follow-up requires escalation — {articles[0]['article_id']}"]}
         else:
             primary = articles[0]
             response_parts = [_suggested_phrasing(primary["content"])]

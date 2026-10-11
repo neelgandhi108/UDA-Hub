@@ -91,8 +91,12 @@ The tests use isolated temporary SQLite databases and cover:
 - successful RAG retrieval and low-confidence escalation;
 - customer lookup, reservation lookup, and subscription mutation tools;
 - structured decision/tool logs;
-- short-term checkpoint memory and cross-session persistent memory;
+- short-term checkpoint memory, context-dependent follow-ups, and cross-session persistent memory;
 - complete resolution and escalation paths.
+
+The demo also sends “That did not work” after a login/password-reset turn under
+the same `thread_id`, showing that classification, retrieval, and the escalation
+hand-off retain the original issue.
 
 ## Submission map
 
