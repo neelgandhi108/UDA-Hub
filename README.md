@@ -25,7 +25,7 @@ required.
 
 ## Install and initialize
 
-Run every command from this `solution/` directory:
+Run every command from the repository root:
 
 ```bash
 python3.12 -m venv .venv
@@ -35,7 +35,8 @@ python -m scripts.setup_databases
 ```
 
 The setup command is the non-interactive equivalent of running
-`01_external_db_setup.ipynb` followed by `02_core_db_setup.ipynb`. It creates:
+`notebooks/01_external_db_setup.ipynb` followed by
+`notebooks/02_core_db_setup.ipynb`. It creates:
 
 - `data/external/cultpass.db` (CultPass operational data)
 - `data/core/udahub.db` (UDA-Hub account, ticket, knowledge, and memory data)
@@ -45,8 +46,8 @@ setup code are submitted, so they can always be recreated. The knowledge source
 contains 16 articles: the original 4 plus 12 new articles spanning billing,
 accounts, reservations, accessibility, safety, technical issues, and privacy.
 
-You may instead run the two setup notebooks in numeric order. Each notebook is
-self-contained and uses only files within `solution/`.
+You may instead run the two setup notebooks in numeric order. Each notebook
+automatically uses the repository root and imports only files within this project.
 
 ## Run
 
@@ -102,9 +103,9 @@ The tests use isolated temporary SQLite databases and cover:
 - `agentic/workflow.py` — from-scratch LangGraph graph and public API
 - `data/models/` — CultPass and UDA-Hub SQLAlchemy models
 - `data/external/*.jsonl` — reproducible seed data
-- `01_external_db_setup.ipynb` — notebook initializing CultPass external database
-- `02_core_db_setup.ipynb` — notebook initializing UDA-Hub core database with 16 knowledge articles
-- `03_agentic_app.ipynb` — interactive notebook demonstrating RAG, tools, memory, and state history
+- `notebooks/01_external_db_setup.ipynb` — initializes the CultPass external database
+- `notebooks/02_core_db_setup.ipynb` — initializes the core database with 16 knowledge articles
+- `notebooks/03_agentic_app.ipynb` — demonstrates RAG, tools, memory, and state history
 - `03_agentic_app.py` — command-line/interactive entry point
 - `scripts/setup_databases.py` — deterministic script equivalent of the setup notebooks
 - `scripts/demo.py` — successful resolution, tool use, memory, and escalation demo

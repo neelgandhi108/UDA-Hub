@@ -1,10 +1,8 @@
 # Reviewer Guide
 
-From the `solution/` directory, run:
+From the repository root, run:
 
 ```bash
-cd solution
-
 # 1. Activate the environment (created with Python 3.12)
 source .venv/bin/activate
 
